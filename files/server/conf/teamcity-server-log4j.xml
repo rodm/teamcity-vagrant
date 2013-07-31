@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE log4j:configuration SYSTEM "./log4j.dtd">
+    <!--
+    To enable debug logging remove XML comments in the lines below that are marked with "DELETE THIS LINE FOR ENABLING DEBUG LOGGING" text.
+    The file can be modified without application restart, but some changes can still require restart to take effect.
+    -->
+<log4j:configuration>
+  <appender name="CONSOLE-WARN" class="org.apache.log4j.ConsoleAppender">
+    <param name="target" value="System.err"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMin" value="WARN"/>
+    </filter>
+  </appender>
+
+  <appender name="CONSOLE-ERROR" class="org.apache.log4j.ConsoleAppender">
+    <param name="target" value="System.err"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMin" value="ERROR"/>
+    </filter>
+  </appender>
+
+  <appender name="ROLL" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-server.log"/>
+    <param name="maxBackupIndex" value="3"/>
+    <!--UNCOMMENT AND REPLACE PREVIOUS LINE FOR STORING LARGEr NUMBER OF DEBUG LOGS-->
+    <!-- <param name="maxBackupIndex" value="20"/> -->
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+
+    <filter class="jetbrains.buildServer.log.CategoryFilter">
+      <param name="DenyCategory" value="javasvn.output"/>
+    </filter>
+
+  </appender>
+
+  <appender name="ROLL.VCS" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-vcs.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+
+  <appender name="ACTIVITIES.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-activities.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+  <!--DELETE THIS LINE FOR ENABLING DEBUG LOGGING--> <!--
+
+  <appender name="SVN.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-svn.log"/>
+    <param name="maxBackupIndex" value="10"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+  <appender name="TFS.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-tfs.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+  <appender name="STARTEAM.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-starteam.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p [%t] - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+  <appender name="CLEARCASE.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-clearcase.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p [%t] - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+  <appender name="PERFORMANCE.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-performance.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+  <appender name="AGENT_STATISTICS.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-agent-statistics.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%m %n"/>
+    </layout>
+  </appender>
+
+  <appender name="XMLRPC.LOG" class="org.apache.log4j.RollingFileAppender">
+    <param name="file" value="${teamcity_logs}/teamcity-xmlrpc.log"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d] %6p - %30.30c - %m %n"/>
+    </layout>
+  </appender>
+
+
+  <category name="jetbrains.buildServer.buildTriggers.vcs.clearcase">
+    <priority value="DEBUG"/>
+    <appender-ref ref="CLEARCASE.LOG"/>
+  </category>
+
+  <category name="jetbrains.buildServer.buildTriggers.vcs.starteam">
+    <priority value="DEBUG"/>
+    <appender-ref ref="STARTEAM.LOG"/>
+  </category>
+
+  <category name="jetbrains.buildServer.buildTriggers.vcs.tfs">
+    <priority value="DEBUG"/>
+    <appender-ref ref="TFS.LOG"/>
+  </category>
+
+  <category name="jetbrains.buildServer.xmlRpc" additivity="false">
+    <appender-ref ref="XMLRPC.LOG"/>
+  </category>
+
+  <category name="jetbrains.buildServer.AGENTSSTATISTICS">
+    <appender-ref ref="AGENT_STATISTICS.LOG"/>
+  </category>
+
+  <category name="jetbrains.buildServer.performance" additivity="false">
+    <appender-ref ref="PERFORMANCE.LOG"/>
+  </category>
+
+  <category name="javasvn.output" additivity="false">
+    <priority value="DEBUG"/>
+    <appender-ref ref="SVN.LOG"/>
+  </category>
+
+  --> <!--DELETE THIS LINE FOR ENABLING DEBUG LOGGING-->
+
+  <category name="jetbrains.buildServer.ACTIVITIES">
+    <appender-ref ref="ACTIVITIES.LOG"/>
+  </category>
+
+
+  <category name="jetbrains.buildServer.VCS" additivity="false">
+    <appender-ref ref="ROLL.VCS"/>
+    <appender-ref ref="CONSOLE-ERROR"/>
+  </category>
+
+  <category name="jetbrains.buildServer.buildTriggers.vcs" additivity="false">
+    <appender-ref ref="ROLL.VCS"/>
+    <appender-ref ref="CONSOLE-ERROR"/>
+  </category>
+
+  <category name="jetbrains.buildServer">
+    <!--DELETE THIS LINE FOR ENABLING DEBUG LOGGING--> <!--
+    <priority value="DEBUG"/>
+    --> <!--DELETE THIS LINE FOR ENABLING DEBUG LOGGING-->
+    <appender-ref ref="ROLL"/>
+  </category>
+
+  <root>
+    <priority value="INFO"/>
+    <appender-ref ref="CONSOLE-WARN"/>
+  </root>
+
+</log4j:configuration>
