@@ -1,0 +1,47 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          teamcity-agent
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start and stop the TeamCity Build Agent
+### END INIT INFO
+
+# For CentOS/RHEL
+#chkconfig: 2345 80 05
+#description: Start and stop the TeamCity Build Agent
+
+TEAMCITY_HOME=/opt/teamcity-agent
+TEAMCITY_USER=teamcity
+AGENT_SCRIPT=${TEAMCITY_HOME}/bin/agent.sh
+AGENT_LOG_DIR=${TEAMCITY_HOME}/logs
+AGENT_LOG=${AGENT_LOG_DIR}/agent-console.log
+
+[ -d $AGENT_LOG_DIR ] || su - ${TEAMCITY_USER} -c "mkdir $AGENT_LOG_DIR"
+
+umask 002
+
+case "$1" in
+  start)
+    su - ${TEAMCITY_USER} -c "${AGENT_SCRIPT} $1 > ${AGENT_LOG} 2>&1"
+    RETVAL=$?
+    ;;
+
+  stop)
+    su - ${TEAMCITY_USER} -c "${AGENT_SCRIPT} $1 >> ${AGENT_LOG} 2>&1"
+    RETVAL=$?
+    ;;
+
+  restart)
+    $0 stop && $0 start
+    RETVAL=$?
+    ;;
+
+  *)
+    echo "Usage: $0 { start | stop | restart }"
+    exit 1
+    ;;
+
+esac
+exit ${RETVAL}
+
