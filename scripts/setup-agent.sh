@@ -42,8 +42,7 @@ fi
 cp -r /vagrant/files/agent $TEAMCITY_DIR
 
 # Download Build Agent from server and install
-#wget --no-proxy http://teamcity:8111/teamcity/update/buildAgent.zip -O /tmp/buildAgent.zip
-unzip -j -d /tmp /vagrant/files/TeamCity-8.0.2.war update/buildAgent.zip
+wget --no-proxy http://teamcity:8111/teamcity/update/buildAgent.zip -O /tmp/buildAgent.zip
 mkdir -p $TEAMCITY_DIR/agent
 unzip -q /tmp/buildAgent.zip -d $TEAMCITY_DIR/agent
 chmod ug+x $TEAMCITY_DIR/agent/bin/agent.sh

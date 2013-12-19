@@ -14,7 +14,8 @@ TEAMCITY_DB_PASS=teamcity
 TEAMCITY_DIR=/opt/teamcity-server
 TEAMCITY_USER=teamcity
 TEAMCITY_GROUP=teamcity
-TEAMCITY_WAR=TeamCity-8.0.2.war
+TEAMCITY_WAR=TeamCity-8.0.5.war
+TEAMCITY_URL=http://download.jetbrains.com/teamcity/$TEAMCITY_WAR
 
 # Install various packages required to run TeamCity
 apt-get update -y
@@ -85,6 +86,10 @@ sed -e "s/^connectionUrl=.*$/connectionUrl=jdbc:mysql:\/\/localhost:3306\/$TEAMC
 
 # Install TeamCity war file
 if [ ! -f $TEAMCITY_DIR/$TEAMCITY_WAR ]; then
+    if [ ! -f /vagrant/files/$TEAMCITY_WAR ]; then
+        wget -q --no-proxy $TEAMCITY_URL -P /vagrant/files
+
+    fi
     cp /vagrant/files/$TEAMCITY_WAR $TEAMCITY_DIR
     mkdir -p $TEAMCITY_DIR/conf/Catalina/localhost
     cat > $TEAMCITY_DIR/conf/Catalina/localhost/teamcity.xml << EOF
