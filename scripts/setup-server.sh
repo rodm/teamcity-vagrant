@@ -5,7 +5,11 @@ NTP_SERVER=time.euro.apple.com
 MYSQL_PASSWORD=admin
 
 JDK=jdk1.6.0_45
-TOMCAT=apache-tomcat-6.0.36
+
+TOMCAT_VERS=6.0.37
+TOMCAT=apache-tomcat-${TOMCAT_VERS}
+TOMCAT_DIR=/opt/$TOMCAT
+TOMCAT_URL=http://www.eu.apache.org/dist/tomcat/tomcat-6/v${TOMCAT_VERS}/bin/${TOMCAT}.zip
 
 MYSQL_JDBC_VERS=5.1.27
 MYSQL_JDBC_JAR=mysql-connector-java-${MYSQL_JDBC_VERS}.jar
@@ -60,9 +64,12 @@ cd /opt
 if [ ! -d /opt/$JDK ]; then
     sh /vagrant/files/jdk-6u45-linux-i586.bin -noregister > /dev/null
 fi
-if [ ! -d /opt/$TOMCAT ]; then
+if [ ! -d $TOMCAT_DIR ]; then
+    if [ ! -f /vagrant/files/$TOMCAT.zip ]; then
+        wget -q --no-proxy $TOMCAT_URL -P /vagrant/files
+    fi
     unzip -q /vagrant/files/$TOMCAT.zip
-    chmod +x /opt/$TOMCAT/bin/*.sh
+    chmod +x $TOMCAT_DIR/bin/*.sh
 fi
 
 # Setup a user to run the TeamCity server
@@ -72,15 +79,15 @@ fi
 if [ ! -f /etc/teamcity-server.conf ]; then
 cat > /etc/teamcity-server.conf <<EOF
 JAVA_HOME=/opt/$JDK
-CATALINA_HOME=/opt/$TOMCAT
+CATALINA_HOME=$TOMCAT_DIR
 EOF
 fi
 
 # Copy start/stop script and Tomcat configuration files
 mkdir -p $TEAMCITY_DIR/conf
-cp /opt/$TOMCAT/conf/* $TEAMCITY_DIR/conf
+cp $TOMCAT_DIR/conf/* $TEAMCITY_DIR/conf
 cp -r /vagrant/files/server/* $TEAMCITY_DIR
-sed -e "s/^shared.loader=.*$/shared.loader=\${catalina.base}\/shared\/lib\/*.jar/" < /opt/$TOMCAT/conf/catalina.properties > $TEAMCITY_DIR/conf/catalina.properties
+sed -e "s/^shared.loader=.*$/shared.loader=\${catalina.base}\/shared\/lib\/*.jar/" < $TOMCAT_DIR/conf/catalina.properties > $TEAMCITY_DIR/conf/catalina.properties
 
 mkdir -p $TEAMCITY_DIR/data/config
 sed -e "s/^connectionUrl=.*$/connectionUrl=jdbc:mysql:\/\/localhost:3306\/$TEAMCITY_DB_NAME/" \

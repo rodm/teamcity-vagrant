@@ -12,10 +12,9 @@ You'll need to have the following tools installed
 The following should be downloaded and copied to the files directory.
 
 * [JDK 6](http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html)
-* [Apache Tomcat](http://tomcat.apache.org/download-60.cgi)
 
-The shell scripts expect to find a 32 bit JDK 6u45 and  Tomcat version 6.0.36 zip file in the files directory.
-The TeamCity war file and MySQL JDBC driver are downloaded by the setup script and saved to the files directory.
+The shell scripts expect to find a 32 bit JDK version 6u45 installer in the files directory. The Apache Tomcat zip,
+TeamCity war file and MySQL JDBC driver are downloaded by the scripts, if needed, and saved to the files directory.
 
 ## Starting the TeamCity server
 
