@@ -7,6 +7,10 @@ MYSQL_PASSWORD=admin
 JDK=jdk1.6.0_45
 TOMCAT=apache-tomcat-6.0.36
 
+MYSQL_JDBC_VERS=5.1.27
+MYSQL_JDBC_JAR=mysql-connector-java-${MYSQL_JDBC_VERS}.jar
+MYSQL_JDBC_URL=http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${MYSQL_JDBC_VERS}/${MYSQL_JDBC_JAR}
+
 TEAMCITY_DB_NAME=teamcity
 TEAMCITY_DB_USER=teamcity
 TEAMCITY_DB_PASS=teamcity
@@ -88,7 +92,6 @@ sed -e "s/^connectionUrl=.*$/connectionUrl=jdbc:mysql:\/\/localhost:3306\/$TEAMC
 if [ ! -f $TEAMCITY_DIR/$TEAMCITY_WAR ]; then
     if [ ! -f /vagrant/files/$TEAMCITY_WAR ]; then
         wget -q --no-proxy $TEAMCITY_URL -P /vagrant/files
-
     fi
     cp /vagrant/files/$TEAMCITY_WAR $TEAMCITY_DIR
     mkdir -p $TEAMCITY_DIR/conf/Catalina/localhost
@@ -102,7 +105,10 @@ fi
 # Install MySQL JDBC driver
 if [ ! -d $TEAMCITY_DIR/shared/lib ]; then
     mkdir -p $TEAMCITY_DIR/shared/lib
-    cp /vagrant/files/mysql-connector-java-5.1.25-bin.jar $TEAMCITY_DIR/shared/lib
+    if [ ! -f /vagrant/files/$MYSQL_JDBC_JAR ]; then
+        wget -q --no-proxy $MYSQL_JDBC_URL -O /vagrant/files/$MYSQL_JDBC_JAR
+    fi
+    cp /vagrant/files/$MYSQL_JDBC_JAR $TEAMCITY_DIR/shared/lib
 fi
 mkdir $TEAMCITY_DIR/logs
 
