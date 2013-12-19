@@ -2,85 +2,52 @@
 # TeamCity Server and Agent VMs configured using shell scripts
 #
 
-Vagrant.configure("2") do | config |
+domain = 'localdomain'
 
-  # TeamCity Build Server
-  config.vm.define :teamcity do | config |
-    #config.vm.box = "lucid32"
-    config.vm.box = "precise32"
-    #config.vm.box_url = "http://files.vagrantup.com/lucid32.box"
-    config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+box = 'precise32'
+box_url = 'http://files.vagrantup.com/precise32.box'
 
-    config.vm.hostname = "teamcity.localdomain"
-    config.vm.network :private_network, ip: "192.168.80.10"
+nodes = [
+  { :hostname => 'teamcity', :ip => '192.168.80.10', :ram => '2048' },
+  { :hostname => 'agent01',  :ip => '192.168.80.11', :ram => '2048' },
+  { :hostname => 'agent02',  :ip => '192.168.80.12', :ram => '2048' },
+  { :hostname => 'agent03',  :ip => '192.168.80.13', :ram => '2048' }
+]
 
-    config.vm.provider :virtualbox do | vbox |
-      vbox.customize ["modifyvm", :id, "--name", "teamcity"]
-      vbox.customize ["modifyvm", :id, "--memory", 2048]
-    end
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
 
-    config.vm.provision :shell do | shell |
-      shell.path = "scripts/setup.sh"
-    end
-  end
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  # TeamCity Build Agent - agent01
-  config.vm.define :agent01 do | config |
-    #config.vm.box = "lucid32"
-    config.vm.box = "precise32"
-    #config.vm.box_url = "http://files.vagrantup.com/lucid32.box"
-    config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+  nodes.each do | node |
+    config.vm.define node[:hostname] do | node_config |
+      node_config.vm.box = box
+      node_config.vm.box_url = box_url
 
-    config.vm.hostname = "agent01.localdomain"
-    config.vm.network :private_network, ip: "192.168.80.11"
+      node_config.vm.hostname = node[:hostname] + '.' + domain
+      node_config.vm.network :private_network, ip: node[:ip]
 
-    config.vm.provider :virtualbox do | vbox |
-      vbox.customize ["modifyvm", :id, "--name", "agent01"]
-      vbox.customize ["modifyvm", :id, "--memory", 2048]
-    end
+      memory = node[:ram] ? node[:ram] : 256
 
-    config.vm.provision :shell do | shell |
-      shell.path = "scripts/setup.sh"
-    end
-  end
+      node_config.vm.provider :virtualbox do | vbox |
+        vbox.gui = false
+        vbox.customize ['modifyvm', :id, '--name', node[:hostname]]
+        vbox.customize ['modifyvm', :id, '--memory', memory.to_s]
+      end
 
-  # TeamCity Build Agent - agent02
-  config.vm.define :agent02 do | config |
-    #config.vm.box = "lucid32"
-    config.vm.box = "precise32"
-    #config.vm.box_url = "http://files.vagrantup.com/lucid32.box"
-    config.vm.box_url = "http://files.vagrantup.com/precise32.box"
+      node_config.vm.provider 'vmware_fusion' do | vmware |
+        vmware.gui = false
+        vmware.vmx['memsize'] = memory.to_s
+      end
 
-    config.vm.hostname = "agent02.localdomain"
-    config.vm.network :private_network, ip: "192.168.80.12"
+      node_config.vm.provider 'vmware_workstation' do | vmware |
+        vmware.gui = false
+        vmware.vmx['memsize'] = memory.to_s
+      end
 
-    config.vm.provider :virtualbox do | vbox |
-      vbox.customize ["modifyvm", :id, "--name", "agent02"]
-      vbox.customize ["modifyvm", :id, "--memory", 2048]
-    end
-
-    config.vm.provision :shell do | shell |
-      shell.path = "scripts/setup.sh"
-    end
-  end
-
-  # TeamCity Build Agent - agent03
-  config.vm.define :agent03 do | config |
-    #config.vm.box = "lucid32"
-    config.vm.box = "precise32"
-    #config.vm.box_url = "http://files.vagrantup.com/lucid32.box"
-    config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-
-    config.vm.hostname = "agent03.localdomain"
-    config.vm.network :private_network, ip: "192.168.80.13"
-
-    config.vm.provider :virtualbox do | vbox |
-      vbox.customize ["modifyvm", :id, "--name", "agent03"]
-      vbox.customize ["modifyvm", :id, "--memory", 2048]
-    end
-
-    config.vm.provision :shell do | shell |
-      shell.path = "scripts/setup.sh"
+      node_config.vm.provision :shell do | shell |
+        shell.path = 'scripts/setup.sh'
+      end
     end
   end
 end
