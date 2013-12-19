@@ -2,9 +2,8 @@
 
 NTP_SERVER=time.euro.apple.com
 
-MYSQL_PASSWORD=admin
-
-JDK=jdk1.6.0_45
+JDK=jdk1.7.0_45
+JDK_FILE=jdk-7u45-linux-i586.tar.gz
 
 TOMCAT_VERS=6.0.37
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
@@ -14,20 +13,20 @@ TOMCAT_URL=http://www.eu.apache.org/dist/tomcat/tomcat-6/v${TOMCAT_VERS}/bin/${T
 MYSQL_JDBC_VERS=5.1.27
 MYSQL_JDBC_JAR=mysql-connector-java-${MYSQL_JDBC_VERS}.jar
 MYSQL_JDBC_URL=http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${MYSQL_JDBC_VERS}/${MYSQL_JDBC_JAR}
+MYSQL_PASSWORD=admin
 
 TEAMCITY_DB_NAME=teamcity
 TEAMCITY_DB_USER=teamcity
 TEAMCITY_DB_PASS=teamcity
 
 TEAMCITY_DIR=/opt/teamcity-server
-TEAMCITY_USER=teamcity
-TEAMCITY_GROUP=teamcity
 TEAMCITY_WAR=TeamCity-8.0.5.war
 TEAMCITY_URL=http://download.jetbrains.com/teamcity/$TEAMCITY_WAR
+TEAMCITY_USER=teamcity
+TEAMCITY_GROUP=teamcity
 
 # Install various packages required to run TeamCity
 apt-get update -y
-#apt-get upgrade -y
 apt-get install -y -q ntp
 apt-get install -y -q unzip
 
@@ -60,15 +59,14 @@ fi
 
 # Install Java and Tomcat
 mkdir -p /opt
-cd /opt
 if [ ! -d /opt/$JDK ]; then
-    sh /vagrant/files/jdk-6u45-linux-i586.bin -noregister > /dev/null
+    tar -xzf /vagrant/files/$JDK_FILE -C /opt
 fi
 if [ ! -d $TOMCAT_DIR ]; then
     if [ ! -f /vagrant/files/$TOMCAT.zip ]; then
         wget -q --no-proxy $TOMCAT_URL -P /vagrant/files
     fi
-    unzip -q /vagrant/files/$TOMCAT.zip
+    unzip -q /vagrant/files/$TOMCAT.zip -d /opt
     chmod +x $TOMCAT_DIR/bin/*.sh
 fi
 

@@ -2,7 +2,8 @@
 
 NTP_SERVER=time.euro.apple.com
 
-JDK=jdk1.6.0_45
+JDK=jdk1.7.0_45
+JDK_FILE=jdk-7u45-linux-i586.tar.gz
 
 TEAMCITY_DIR=/opt/teamcity-agent
 TEAMCITY_USER=teamcity
@@ -33,16 +34,15 @@ EOF
 
 # Install Java
 mkdir -p /opt
-cd /opt
 if [ ! -d /opt/$JDK ]; then
-    sh /vagrant/files/jdk-6u45-linux-i586.bin -noregister > /dev/null
+    tar -xzf /vagrant/files/$JDK_FILE -C /opt
 fi
 
 # Copy start/stop script
 cp -r /vagrant/files/agent $TEAMCITY_DIR
 
 # Download Build Agent from server and install
-wget --no-proxy http://teamcity:8111/teamcity/update/buildAgent.zip -O /tmp/buildAgent.zip
+wget -q --no-proxy http://teamcity:8111/teamcity/update/buildAgent.zip -O /tmp/buildAgent.zip
 mkdir -p $TEAMCITY_DIR/agent
 unzip -q /tmp/buildAgent.zip -d $TEAMCITY_DIR/agent
 chmod ug+x $TEAMCITY_DIR/agent/bin/agent.sh

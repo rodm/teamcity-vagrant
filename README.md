@@ -11,7 +11,7 @@ You'll need to have the following tools installed
 
 The following should be downloaded and copied to the files directory.
 
-* [JDK 6](http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html)
+* [JDK 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
 The shell scripts expect to find a 32 bit JDK version 6u45 installer in the files directory. The Apache Tomcat zip,
 TeamCity war file and MySQL JDBC driver are downloaded by the scripts, if needed, and saved to the files directory.
