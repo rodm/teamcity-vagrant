@@ -20,7 +20,7 @@ TEAMCITY_DB_USER=teamcity
 TEAMCITY_DB_PASS=teamcity
 
 TEAMCITY_DIR=/opt/teamcity-server
-TEAMCITY_WAR=TeamCity-8.0.5.war
+TEAMCITY_WAR=TeamCity-8.0.6.war
 TEAMCITY_URL=http://download.jetbrains.com/teamcity/$TEAMCITY_WAR
 TEAMCITY_USER=teamcity
 TEAMCITY_GROUP=teamcity
