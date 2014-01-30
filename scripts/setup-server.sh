@@ -5,10 +5,10 @@ NTP_SERVER=time.euro.apple.com
 JDK=jdk1.7.0_45
 JDK_FILE=jdk-7u45-linux-i586.tar.gz
 
-TOMCAT_VERS=6.0.37
+TOMCAT_VERS=7.0.50
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
 TOMCAT_DIR=/opt/$TOMCAT
-TOMCAT_URL=http://www.eu.apache.org/dist/tomcat/tomcat-6/v${TOMCAT_VERS}/bin/${TOMCAT}.zip
+TOMCAT_URL=http://www.eu.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERS}/bin/${TOMCAT}.zip
 
 MYSQL_JDBC_VERS=5.1.27
 MYSQL_JDBC_JAR=mysql-connector-java-${MYSQL_JDBC_VERS}.jar
