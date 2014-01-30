@@ -10,7 +10,7 @@ TOMCAT=apache-tomcat-${TOMCAT_VERS}
 TOMCAT_DIR=/opt/$TOMCAT
 TOMCAT_URL=http://www.eu.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERS}/bin/${TOMCAT}.zip
 
-MYSQL_JDBC_VERS=5.1.27
+MYSQL_JDBC_VERS=5.1.28
 MYSQL_JDBC_JAR=mysql-connector-java-${MYSQL_JDBC_VERS}.jar
 MYSQL_JDBC_URL=http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${MYSQL_JDBC_VERS}/${MYSQL_JDBC_JAR}
 MYSQL_PASSWORD=admin
