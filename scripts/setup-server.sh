@@ -85,7 +85,6 @@ fi
 mkdir -p $TEAMCITY_DIR/conf
 cp $TOMCAT_DIR/conf/* $TEAMCITY_DIR/conf
 cp -r /vagrant/files/server/* $TEAMCITY_DIR
-sed -e "s/^shared.loader=.*$/shared.loader=\${catalina.base}\/shared\/lib\/*.jar/" < $TOMCAT_DIR/conf/catalina.properties > $TEAMCITY_DIR/conf/catalina.properties
 
 mkdir -p $TEAMCITY_DIR/data/config
 sed -e "s/^connectionUrl=.*$/connectionUrl=jdbc:mysql:\/\/localhost:3306\/$TEAMCITY_DB_NAME/" \
@@ -109,11 +108,11 @@ fi
 
 # Install MySQL JDBC driver
 if [ ! -d $TEAMCITY_DIR/shared/lib ]; then
-    mkdir -p $TEAMCITY_DIR/shared/lib
+    mkdir -p $TEAMCITY_DIR/data/lib/jdbc
     if [ ! -f /vagrant/files/$MYSQL_JDBC_JAR ]; then
         wget -q --no-proxy $MYSQL_JDBC_URL -O /vagrant/files/$MYSQL_JDBC_JAR
     fi
-    cp /vagrant/files/$MYSQL_JDBC_JAR $TEAMCITY_DIR/shared/lib
+    cp /vagrant/files/$MYSQL_JDBC_JAR $TEAMCITY_DIR/data/lib/jdbc
 fi
 mkdir $TEAMCITY_DIR/logs
 
