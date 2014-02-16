@@ -4,8 +4,10 @@
 
 domain = 'localdomain'
 
-box = 'precise32'
-box_url = 'http://files.vagrantup.com/precise32.box'
+box = 'precise64'
+box_url = 'http://files.vagrantup.com/precise64.box'
+#box = 'centos64'
+#box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box'
 
 nodes = [
   { :hostname => 'teamcity', :ip => '192.168.80.10', :ram => '2048' },

@@ -9,6 +9,10 @@
 # Short-Description: Start and stop the TeamCity Build Server
 ### END INIT INFO
 
+# For CentOS/RHEL
+#chkconfig: 2345 80 05
+#description: Start and stop the TeamCity Build Server
+
 TEAMCITY_HOME=/opt/teamcity-server
 TEAMCITY_USER=teamcity
 SERVER_SCRIPT=${TEAMCITY_HOME}/bin/server.sh

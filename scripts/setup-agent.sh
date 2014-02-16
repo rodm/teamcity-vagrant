@@ -3,21 +3,30 @@
 NTP_SERVER=time.euro.apple.com
 
 JDK=jdk1.7.0_45
-JDK_FILE=jdk-7u45-linux-i586.tar.gz
+JDK_FILE=jdk-7u45-linux-x64.tar.gz
 
 TEAMCITY_DIR=/opt/teamcity-agent
 TEAMCITY_USER=teamcity
 TEAMCITY_GROUP=teamcity
 
 # Install various packages required to run a TeamCity Build Agent
-apt-get update -y
-apt-get install -y -q ntp
-apt-get install -y -q unzip
-apt-get install -y -q xvfb
-apt-get install -y -q libxtst6
-apt-get install -y -q libxi6
-apt-get install -y -q libxrender1
-apt-get install -y -q libfontconfig1
+if [ -f /etc/redhat-release ]; then
+    yum -y install ntp
+    yum -y install unzip
+    yum -y install libXi
+    yum -y install libXrender
+    yum -y install fontconfig
+    yum -y install xorg-x11-server-Xvfb
+else
+    apt-get update -y
+    apt-get install -y -q ntp
+    apt-get install -y -q unzip
+    apt-get install -y -q xvfb
+    apt-get install -y -q libxtst6
+    apt-get install -y -q libxi6
+    apt-get install -y -q libxrender1
+    apt-get install -y -q libfontconfig1
+fi
 
 # Reconfigure /etc/ntp.conf to use server
 sudo /etc/init.d/ntp stop
@@ -63,10 +72,24 @@ mkdir $TEAMCITY_DIR/logs
 
 chown -R $TEAMCITY_USER:$TEAMCITY_GROUP $TEAMCITY_DIR
 
-# Install init script to start TeamCity on server boot
-if [ ! -f /etc/init.d/teamcity-agent ]; then
-    cp /vagrant/files/agent/bin/teamcity-agent /etc/init.d
-    update-rc.d teamcity-agent defaults
+if [ -f /etc/redhat-release ]; then
+    # Allow connections
+    iptables -I INPUT 5 -p tcp --dport 9090 -j ACCEPT
+    iptables --line-numbers -L INPUT -n
+    /sbin/service iptables save
 fi
 
-/etc/init.d/teamcity-agent start
+# Install init script to start TeamCity on server boot
+if [ -f /etc/redhat-release ]; then
+    if [ ! -f /etc/rc.d/init.d/teamcity-agent ]; then
+        cp /vagrant/files/agent/bin/teamcity-agent /etc/rc.d/init.d
+        sudo chkconfig --add teamcity-agent
+    fi
+    /sbin/service teamcity-agent start
+else
+    if [ ! -f /etc/init.d/teamcity-agent ]; then
+        cp /vagrant/files/agent/bin/teamcity-agent /etc/init.d
+        update-rc.d teamcity-agent defaults
+    fi
+    /etc/init.d/teamcity-agent start
+fi

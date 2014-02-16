@@ -3,7 +3,7 @@
 NTP_SERVER=time.euro.apple.com
 
 JDK=jdk1.7.0_45
-JDK_FILE=jdk-7u45-linux-i586.tar.gz
+JDK_FILE=jdk-7u45-linux-x64.tar.gz
 
 TOMCAT_VERS=7.0.50
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
@@ -26,9 +26,13 @@ TEAMCITY_USER=teamcity
 TEAMCITY_GROUP=teamcity
 
 # Install various packages required to run TeamCity
-apt-get update -y
-apt-get install -y -q ntp
-apt-get install -y -q unzip
+if [ -f /etc/redhat-release ]; then
+    yum -y install ntp
+else
+    apt-get update -y
+    apt-get install -y -q ntp
+    apt-get install -y -q unzip
+fi
 
 # Configure ntp server
 sudo /etc/init.d/ntp stop
@@ -36,10 +40,16 @@ sed -e "s/^server.*$/server $NTP_SERVER/" < /etc/ntp.conf > /tmp/ntp.conf && sud
 sudo /etc/init.d/ntp start
 
 # Install MySQL
-echo mysql-server-5.5 mysql-server/root_password password $MYSQL_PASSWORD | debconf-set-selections
-echo mysql-server-5.5 mysql-server/root_password_again password $MYSQL_PASSWORD | debconf-set-selections
-apt-get install -y -q mysql-server
-apt-get clean
+if [ -f /etc/redhat-release ]; then
+    yum -y install mysql-server
+    /sbin/service mysqld start
+    /usr/bin/mysqladmin -u root password "$MYSQL_PASSWORD"
+else
+    echo mysql-server-5.5 mysql-server/root_password password $MYSQL_PASSWORD | debconf-set-selections
+    echo mysql-server-5.5 mysql-server/root_password_again password $MYSQL_PASSWORD | debconf-set-selections
+    apt-get install -y -q mysql-server
+    apt-get clean
+fi
 
 # Create database
 mysql -u root -p$MYSQL_PASSWORD -e 'show databases;'| grep teamcity > /dev/null
@@ -118,10 +128,24 @@ mkdir $TEAMCITY_DIR/logs
 
 chown -R $TEAMCITY_USER:$TEAMCITY_GROUP $TEAMCITY_DIR
 
-# Install init script to start TeamCity on server boot
-if [ ! -f /etc/init.d/teamcity-server ]; then
-    cp /vagrant/files/server/bin/teamcity-server /etc/init.d
-    update-rc.d teamcity-server defaults
+if [ -f /etc/redhat-release ]; then
+    # Allow connections
+    iptables -I INPUT 5 -p tcp --dport 8111 -j ACCEPT
+    iptables --line-numbers -L INPUT -n
+    /sbin/service iptables save
 fi
 
-/etc/init.d/teamcity-server start
+# Install init script to start TeamCity on server boot
+if [ -f /etc/redhat-release ]; then
+    if [ ! -f /etc/rc.d/init.d/teamcity-server ]; then
+        cp /vagrant/files/server/bin/teamcity-server /etc/rc.d/init.d
+        sudo chkconfig --add teamcity-server
+    fi
+    /sbin/service teamcity-server start
+else
+    if [ ! -f /etc/init.d/teamcity-server ]; then
+        cp /vagrant/files/server/bin/teamcity-server /etc/init.d
+        update-rc.d teamcity-server defaults
+    fi
+    /etc/init.d/teamcity-server start
+fi
