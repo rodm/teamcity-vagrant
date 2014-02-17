@@ -16,8 +16,9 @@ The following should be downloaded and copied to the files directory.
 The shell scripts expect to find a 64 bit JDK version 7u45 installer in the files directory. The Apache Tomcat zip,
 TeamCity war file and MySQL JDBC driver are downloaded by the scripts, if needed, and saved to the files directory.
 
-By default Ubuntu 12.04 VMs are used, the Vagrantfile can be modified to use CentOS 6.4 VM by commenting out the
-box and box_url properties for precise64 and uncommenting the centos64 values.
+By default Ubuntu 12.04 VMs are used for the server and agents, except agent03 which is configured to use a
+CentOS 6.4 VM. The nodes array in the Vagrantfile can be modified to change the OS used by any of the VMs. Both the
+server and agents can be run on either Ubuntu 12.04 or CentOS 6.4.
 
 ## Starting the TeamCity server
 
