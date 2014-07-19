@@ -2,15 +2,15 @@
 
 NTP_SERVER=time.euro.apple.com
 
-JDK=jdk1.7.0_45
-JDK_FILE=jdk-7u45-linux-x64.tar.gz
+JDK=jdk1.7.0_65
+JDK_FILE=jdk-7u65-linux-x64.tar.gz
 
-TOMCAT_VERS=7.0.50
+TOMCAT_VERS=7.0.54
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
 TOMCAT_DIR=/opt/$TOMCAT
-TOMCAT_URL=http://www.eu.apache.org/dist/tomcat/tomcat-7/v${TOMCAT_VERS}/bin/${TOMCAT}.zip
+TOMCAT_URL=http://search.maven.org/remotecontent?filepath=org/apache/tomcat/tomcat/${TOMCAT_VERS}/tomcat-${TOMCAT_VERS}.zip
 
-MYSQL_JDBC_VERS=5.1.28
+MYSQL_JDBC_VERS=5.1.31
 MYSQL_JDBC_JAR=mysql-connector-java-${MYSQL_JDBC_VERS}.jar
 MYSQL_JDBC_URL=http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${MYSQL_JDBC_VERS}/${MYSQL_JDBC_JAR}
 MYSQL_PASSWORD=admin
@@ -74,7 +74,7 @@ if [ ! -d /opt/$JDK ]; then
 fi
 if [ ! -d $TOMCAT_DIR ]; then
     if [ ! -f /vagrant/files/$TOMCAT.zip ]; then
-        wget -q --no-proxy $TOMCAT_URL -P /vagrant/files
+        wget -q --no-proxy $TOMCAT_URL -O /vagrant/files/$TOMCAT.zip
     fi
     unzip -q /vagrant/files/$TOMCAT.zip -d /opt
     chmod +x $TOMCAT_DIR/bin/*.sh
