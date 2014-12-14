@@ -2,15 +2,15 @@
 
 NTP_SERVER=time.euro.apple.com
 
-JDK=jdk1.7.0_65
-JDK_FILE=jdk-7u65-linux-x64.tar.gz
+JDK=jdk1.7.0_72
+JDK_FILE=jdk-7u72-linux-x64.tar.gz
 
-TOMCAT_VERS=7.0.54
+TOMCAT_VERS=7.0.57
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
 TOMCAT_DIR=/opt/$TOMCAT
 TOMCAT_URL=http://search.maven.org/remotecontent?filepath=org/apache/tomcat/tomcat/${TOMCAT_VERS}/tomcat-${TOMCAT_VERS}.zip
 
-MYSQL_JDBC_VERS=5.1.31
+MYSQL_JDBC_VERS=5.1.34
 MYSQL_JDBC_JAR=mysql-connector-java-${MYSQL_JDBC_VERS}.jar
 MYSQL_JDBC_URL=http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${MYSQL_JDBC_VERS}/${MYSQL_JDBC_JAR}
 MYSQL_PASSWORD=admin
@@ -20,7 +20,7 @@ TEAMCITY_DB_USER=teamcity
 TEAMCITY_DB_PASS=teamcity
 
 TEAMCITY_DIR=/opt/teamcity-server
-TEAMCITY_WAR=TeamCity-8.0.6.war
+TEAMCITY_WAR=TeamCity-9.0.war
 TEAMCITY_URL=http://download.jetbrains.com/teamcity/$TEAMCITY_WAR
 TEAMCITY_USER=teamcity
 TEAMCITY_GROUP=teamcity

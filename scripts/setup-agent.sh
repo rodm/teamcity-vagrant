@@ -2,8 +2,8 @@
 
 NTP_SERVER=time.euro.apple.com
 
-JDK=jdk1.7.0_65
-JDK_FILE=jdk-7u65-linux-x64.tar.gz
+JDK=jdk1.7.0_72
+JDK_FILE=jdk-7u72-linux-x64.tar.gz
 
 TEAMCITY_DIR=/opt/teamcity-agent
 TEAMCITY_USER=teamcity
