@@ -13,7 +13,7 @@ The following should be downloaded and copied to the files directory.
 
 * [JDK 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-The shell scripts expect to find a 64 bit JDK version 7u45 installer in the files directory. The Apache Tomcat zip,
+The shell scripts expect to find a 64 bit JDK version 7u72 installer in the files directory. The Apache Tomcat zip,
 TeamCity war file and MySQL JDBC driver are downloaded by the scripts, if needed, and saved to the files directory.
 
 By default Ubuntu 12.04 VMs are used for the server and agents, except agent03 which is configured to use a
