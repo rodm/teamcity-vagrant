@@ -35,9 +35,6 @@ case "$1" in
     JAVA_OPTS="$JAVA_OPTS -Dteamcity.data.path=${TEAMCITY_HOME}/data"
     JAVA_OPTS="$JAVA_OPTS -Dlog4j.configuration=file:${TEAMCITY_HOME}/conf/teamcity-server-log4j.xml"
     JAVA_OPTS="$JAVA_OPTS -Dteamcity_logs=${TEAMCITY_HOME}/logs"
-    JAVA_OPTS="$JAVA_OPTS -Dteamcity.diskSpaceWatcher.threshold=250000"
-    JAVA_OPTS="$JAVA_OPTS -Dteamcity.queue.mergeBuilds=true"
-    JAVA_OPTS="$JAVA_OPTS -Dmodification.check.interval=360"
     export JAVA_OPTS
     $CATALINA_HOME/bin/startup.sh
     echo
