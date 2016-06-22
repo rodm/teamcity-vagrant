@@ -29,3 +29,10 @@ To create the TeamCity server VM and start the server run, the first run may tak
 To create and start a TeamCity build agent run, replacing vm-name with agent01, agent02 or agent03.
 
     $ vagrant up [vm-name]
+
+## Accessing the TeamCity server
+
+Once the server is started it can be accessed at the following URL, [http://192.168.80.10:8111/teamcity](http://192.168.80.10:8111/teamcity).
+See the [TeamCity Administrator's Guide](https://confluence.jetbrains.com/display/TCD9/Administrator%27s+Guide) for configuring the server.
+
+Once one or more agents have been started they can be authorised from the Agents page in the web UI, [http://192.168.80.10:8111/teamcity/agents.html](http://192.168.80.10:8111/teamcity/agents.html).
