@@ -39,6 +39,11 @@ sudo /etc/init.d/ntp stop
 sed -e "s/^server.*$/server $NTP_SERVER/" < /etc/ntp.conf > /tmp/ntp.conf && sudo mv /tmp/ntp.conf /etc/ntp.conf
 sudo /etc/init.d/ntp start
 
+# Configure MySQL for TeamCity
+# https://confluence.jetbrains.com/display/TCD9/How+To...#HowTo...-ConfigureNewlyInstalledMySQLServer
+mkdir -p /etc/mysql/conf.d
+cp /vagrant/files/mysql/teamcity.cnf /etc/mysql/conf.d
+
 # Install MySQL
 if [ -f /etc/redhat-release ]; then
     yum -y install mysql-server

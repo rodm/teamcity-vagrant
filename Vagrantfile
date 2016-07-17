@@ -10,7 +10,7 @@ centos64_box = 'centos64'
 centos64_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box'
 
 nodes = [
-  { :hostname => 'teamcity', :ip => '192.168.80.10', :ram => '2048' },
+  { :hostname => 'teamcity', :ip => '192.168.80.10', :ram => '3072' },
   { :hostname => 'agent01',  :ip => '192.168.80.11', :ram => '2048' },
   { :hostname => 'agent02',  :ip => '192.168.80.12', :ram => '2048', :box => precise64_box, :url => precise64_url },
   { :hostname => 'agent03',  :ip => '192.168.80.13', :ram => '2048', :box => centos64_box, :url => centos64_url }
