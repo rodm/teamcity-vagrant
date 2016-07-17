@@ -67,12 +67,15 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL HTTP/1.1 Connector on port 8080
     -->
-    <Connector port="8111" protocol="HTTP/1.1"
+    <!-- Configure NIO connector to enable TeamCity websocket support -->
+    <!-- https://confluence.jetbrains.com/display/TCD9/Server+Health#ServerHealth-WebSocketconnectionissues -->
+    <Connector port="8111" protocol="org.apache.coyote.http11.Http11NioProtocol"
                connectionTimeout="20000"
-               acceptCount="100"
-               maxThreads="200"
                redirectPort="8113"
-               useBodyEncodingForURI="true" />
+               useBodyEncodingForURI="true"
+               socket.txBufSize="64000"
+               socket.rxBufSize="64000"
+               tcpNoDelay="1" />
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
