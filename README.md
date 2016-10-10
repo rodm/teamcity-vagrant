@@ -12,7 +12,7 @@ This is a Vagrant setup for creating a TeamCity server and build agents. It uses
 2. Clone this repository.
 3. Download and copy to the `files` directory:
 
-* [JDK 8u92 (64-bit)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [JDK 8u102 (64-bit)](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
 The Apache Tomcat .zip, TeamCity .war file and MySQL JDBC driver are downloaded by the scripts and saved to the `files` directory.
 

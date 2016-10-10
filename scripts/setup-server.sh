@@ -2,8 +2,8 @@
 
 NTP_SERVER=time.euro.apple.com
 
-JDK=jdk1.8.0_92
-JDK_FILE=jdk-8u92-linux-x64.tar.gz
+JDK=jdk1.8.0_102
+JDK_FILE=jdk-8u102-linux-x64.tar.gz
 
 TOMCAT_VERS=7.0.57
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
