@@ -1,7 +1,5 @@
 #!/bin/sh
 
-NTP_SERVER=time.euro.apple.com
-
 JDK=jdk1.8.0_102
 JDK_FILE=jdk-8u102-linux-x64.tar.gz
 
@@ -27,17 +25,11 @@ TEAMCITY_GROUP=teamcity
 
 # Install various packages required to run TeamCity
 if [ -f /etc/redhat-release ]; then
-    yum -y install ntp
+    yum install -y unzip
 else
     apt-get update -y
-    apt-get install -y -q ntp
     apt-get install -y -q unzip
 fi
-
-# Configure ntp server
-sudo /etc/init.d/ntp stop
-sed -e "s/^server.*$/server $NTP_SERVER/" < /etc/ntp.conf > /tmp/ntp.conf && sudo mv /tmp/ntp.conf /etc/ntp.conf
-sudo /etc/init.d/ntp start
 
 # Configure MySQL for TeamCity
 # https://confluence.jetbrains.com/display/TCD9/How+To...#HowTo...-ConfigureNewlyInstalledMySQLServer

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-NTP_SERVER=time.euro.apple.com
-
 JDK=jdk1.8.0_102
 JDK_FILE=jdk-8u102-linux-x64.tar.gz
 
@@ -11,7 +9,6 @@ TEAMCITY_GROUP=teamcity
 
 # Install various packages required to run a TeamCity Build Agent
 if [ -f /etc/redhat-release ]; then
-    yum -y install ntp
     yum -y install unzip
     yum -y install libXi
     yum -y install libXrender
@@ -19,7 +16,6 @@ if [ -f /etc/redhat-release ]; then
     yum -y install xorg-x11-server-Xvfb
 else
     apt-get update -y
-    apt-get install -y -q ntp
     apt-get install -y -q unzip
     apt-get install -y -q xvfb
     apt-get install -y -q libxtst6
@@ -27,11 +23,6 @@ else
     apt-get install -y -q libxrender1
     apt-get install -y -q libfontconfig1
 fi
-
-# Reconfigure /etc/ntp.conf to use server
-sudo /etc/init.d/ntp stop
-sed -e "s/^server.*$/server $NTP_SERVER/g" < /etc/ntp.conf > /tmp/ntp.conf && sudo mv /tmp/ntp.conf /etc/ntp.conf
-sudo /etc/init.d/ntp start
 
 # Setup a user to run the TeamCity agent
 /usr/sbin/groupadd -r $TEAMCITY_GROUP 2>/dev/null
