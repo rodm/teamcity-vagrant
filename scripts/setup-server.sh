@@ -5,7 +5,7 @@ NTP_SERVER=time.euro.apple.com
 JDK=jdk1.8.0_102
 JDK_FILE=jdk-8u102-linux-x64.tar.gz
 
-TOMCAT_VERS=7.0.57
+TOMCAT_VERS=7.0.72
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
 TOMCAT_DIR=/opt/$TOMCAT
 TOMCAT_URL=http://search.maven.org/remotecontent?filepath=org/apache/tomcat/tomcat/${TOMCAT_VERS}/tomcat-${TOMCAT_VERS}.zip
