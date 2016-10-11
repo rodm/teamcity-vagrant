@@ -27,7 +27,7 @@ case "$1" in
 
     # Use "teamcity.data.path" system property which must be set for Tomcat's VM.
     # By default it points to "${user.home}/.BuildServer" directory.
-    JAVA_OPTS="-Xms768m -Xmx768m -XX:PermSize=196m -XX:MaxPermSize=196m"
+    JAVA_OPTS="-Xms768m -Xmx768m"
     JAVA_OPTS="$JAVA_OPTS -Dteamcity"
     JAVA_OPTS="$JAVA_OPTS -Djava.net.preferIPv4Stack=true"
     JAVA_OPTS="$JAVA_OPTS -Djava.awt.headless=true"
