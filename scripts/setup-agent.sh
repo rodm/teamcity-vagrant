@@ -1,7 +1,8 @@
 #!/bin/sh
 
-JDK=jdk1.8.0_102
-JDK_FILE=jdk-8u102-linux-x64.tar.gz
+JDK_URL=http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz
+JDK_FILE=${JDK_URL##*/}
+JDK_DIR=$(echo $JDK_FILE | sed -e 's|jdk-\([0-9]\)u\([0-9]\{1,3\}\).*|jdk1.\1.0_\2|')
 
 TEAMCITY_DIR=/opt/teamcity-agent
 TEAMCITY_USER=teamcity
@@ -10,6 +11,7 @@ TEAMCITY_GROUP=teamcity
 # Install various packages required to run a TeamCity Build Agent
 if [ -f /etc/redhat-release ]; then
     yum -y install unzip
+    yum install -y curl
     yum -y install libXi
     yum -y install libXrender
     yum -y install fontconfig
@@ -17,6 +19,7 @@ if [ -f /etc/redhat-release ]; then
 else
     apt-get update -y
     apt-get install -y -q unzip
+    apt-get install -y -q curl
     apt-get install -y -q xvfb
     apt-get install -y -q libxtst6
     apt-get install -y -q libxi6
@@ -34,7 +37,10 @@ EOF
 
 # Install Java
 mkdir -p /opt
-if [ ! -d /opt/$JDK ]; then
+if [ ! -d /opt/$JDK_DIR ]; then
+    if [ ! -f /vagrant/files/$JDK_FILE ]; then
+        curl -s -L -b "oraclelicense=a" $JDK_URL -o /vagrant/files/$JDK_FILE
+    fi
     tar -xzf /vagrant/files/$JDK_FILE -C /opt
 fi
 
@@ -50,7 +56,7 @@ chmod ug+x $TEAMCITY_DIR/agent/bin/agent.sh
 # Create agent conf and properties files
 if [ ! -f /etc/teamcity-agent.conf ]; then
     cat > /etc/teamcity-agent.conf <<EOF
-JAVA_HOME=/opt/$JDK
+JAVA_HOME=/opt/$JDK_DIR
 EOF
 fi
 

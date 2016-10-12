@@ -1,7 +1,8 @@
 #!/bin/sh
 
-JDK=jdk1.8.0_102
-JDK_FILE=jdk-8u102-linux-x64.tar.gz
+JDK_URL=http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.tar.gz
+JDK_FILE=${JDK_URL##*/}
+JDK_DIR=$(echo $JDK_FILE | sed -e 's|jdk-\([0-9]\)u\([0-9]\{1,3\}\).*|jdk1.\1.0_\2|')
 
 TOMCAT_VERS=7.0.72
 TOMCAT=apache-tomcat-${TOMCAT_VERS}
@@ -26,9 +27,11 @@ TEAMCITY_GROUP=teamcity
 # Install various packages required to run TeamCity
 if [ -f /etc/redhat-release ]; then
     yum install -y unzip
+    yum install -y curl
 else
     apt-get update -y
     apt-get install -y -q unzip
+    apt-get install -y -q curl
 fi
 
 # Configure MySQL for TeamCity
@@ -64,11 +67,16 @@ EOF
     mysql -u root -p$MYSQL_PASSWORD < /tmp/database-setup.sql
 fi
 
-# Install Java and Tomcat
+# Download and install Java
 mkdir -p /opt
-if [ ! -d /opt/$JDK ]; then
+if [ ! -d /opt/$JDK_DIR ]; then
+    if [ ! -f /vagrant/files/$JDK_FILE ]; then
+        curl -s -L -b "oraclelicense=a" $JDK_URL -o /vagrant/files/$JDK_FILE
+    fi
     tar -xzf /vagrant/files/$JDK_FILE -C /opt
 fi
+
+# Download and install Tomcat
 if [ ! -d $TOMCAT_DIR ]; then
     if [ ! -f /vagrant/files/$TOMCAT.zip ]; then
         wget -q --no-proxy $TOMCAT_URL -O /vagrant/files/$TOMCAT.zip
@@ -83,7 +91,7 @@ fi
 
 if [ ! -f /etc/teamcity-server.conf ]; then
 cat > /etc/teamcity-server.conf <<EOF
-JAVA_HOME=/opt/$JDK
+JAVA_HOME=/opt/$JDK_DIR
 CATALINA_HOME=$TOMCAT_DIR
 EOF
 fi
