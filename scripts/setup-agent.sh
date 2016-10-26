@@ -37,11 +37,12 @@ EOF
 
 # Install Java
 mkdir -p /opt
+mkdir -p /vagrant/downloads
 if [ ! -d /opt/$JDK_DIR ]; then
-    if [ ! -f /vagrant/files/$JDK_FILE ]; then
-        curl -s -L -b "oraclelicense=a" $JDK_URL -o /vagrant/files/$JDK_FILE
+    if [ ! -f /vagrant/downloads/$JDK_FILE ]; then
+        curl -s -L -b "oraclelicense=a" $JDK_URL -o /vagrant/downloads/$JDK_FILE
     fi
-    tar -xzf /vagrant/files/$JDK_FILE -C /opt
+    tar -xzf /vagrant/downloads/$JDK_FILE -C /opt
 fi
 
 # Copy start/stop script

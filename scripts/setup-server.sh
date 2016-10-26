@@ -69,19 +69,20 @@ fi
 
 # Download and install Java
 mkdir -p /opt
+mkdir -p /vagrant/downloads
 if [ ! -d /opt/$JDK_DIR ]; then
-    if [ ! -f /vagrant/files/$JDK_FILE ]; then
-        curl -s -L -b "oraclelicense=a" $JDK_URL -o /vagrant/files/$JDK_FILE
+    if [ ! -f /vagrant/downloads/$JDK_FILE ]; then
+        curl -s -L -b "oraclelicense=a" $JDK_URL -o /vagrant/downloads/$JDK_FILE
     fi
-    tar -xzf /vagrant/files/$JDK_FILE -C /opt
+    tar -xzf /vagrant/downloads/$JDK_FILE -C /opt
 fi
 
 # Download and install Tomcat
 if [ ! -d $TOMCAT_DIR ]; then
-    if [ ! -f /vagrant/files/$TOMCAT.zip ]; then
-        wget -q --no-proxy $TOMCAT_URL -O /vagrant/files/$TOMCAT.zip
+    if [ ! -f /vagrant/downloads/$TOMCAT.zip ]; then
+        wget -q --no-proxy $TOMCAT_URL -O /vagrant/downloads/$TOMCAT.zip
     fi
-    unzip -q /vagrant/files/$TOMCAT.zip -d /opt
+    unzip -q /vagrant/downloads/$TOMCAT.zip -d /opt
     chmod +x $TOMCAT_DIR/bin/*.sh
 fi
 
@@ -109,10 +110,10 @@ sed -e "s/^connectionUrl=.*$/connectionUrl=jdbc:mysql:\/\/localhost:3306\/$TEAMC
 
 # Install TeamCity war file
 if [ ! -f $TEAMCITY_DIR/$TEAMCITY_WAR ]; then
-    if [ ! -f /vagrant/files/$TEAMCITY_WAR ]; then
-        wget -q --no-proxy $TEAMCITY_URL -P /vagrant/files
+    if [ ! -f /vagrant/downloads/$TEAMCITY_WAR ]; then
+        wget -q --no-proxy $TEAMCITY_URL -P /vagrant/downloads
     fi
-    cp /vagrant/files/$TEAMCITY_WAR $TEAMCITY_DIR
+    cp /vagrant/downloads/$TEAMCITY_WAR $TEAMCITY_DIR
     mkdir -p $TEAMCITY_DIR/conf/Catalina/localhost
     cat > $TEAMCITY_DIR/conf/Catalina/localhost/teamcity.xml << EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -124,10 +125,10 @@ fi
 # Install MySQL JDBC driver
 if [ ! -d $TEAMCITY_DIR/shared/lib ]; then
     mkdir -p $TEAMCITY_DIR/data/lib/jdbc
-    if [ ! -f /vagrant/files/$MYSQL_JDBC_JAR ]; then
-        wget -q --no-proxy $MYSQL_JDBC_URL -O /vagrant/files/$MYSQL_JDBC_JAR
+    if [ ! -f /vagrant/downloads/$MYSQL_JDBC_JAR ]; then
+        wget -q --no-proxy $MYSQL_JDBC_URL -O /vagrant/downloads/$MYSQL_JDBC_JAR
     fi
-    cp /vagrant/files/$MYSQL_JDBC_JAR $TEAMCITY_DIR/data/lib/jdbc
+    cp /vagrant/downloads/$MYSQL_JDBC_JAR $TEAMCITY_DIR/data/lib/jdbc
 fi
 mkdir $TEAMCITY_DIR/logs
 

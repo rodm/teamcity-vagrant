@@ -9,7 +9,7 @@ This is a Vagrant setup for creating a TeamCity server and build agents. It uses
 * [Vagrant](https://www.vagrantup.com/downloads.html)
 2. Clone this repository.
 
-The JDK, Apache Tomcat, TeamCity WAR file and MySQL JDBC driver are downloaded by the scripts and saved to the `files` directory.
+The JDK, Apache Tomcat, TeamCity WAR file and MySQL JDBC driver are downloaded by the scripts and saved to the `downloads` directory.
 
 By default Ubuntu 12.04 VMs are used for the server and agents, except agent03 which is configured to use a
 CentOS 6.4 VM. The nodes array in the `Vagrantfile` can be modified to change the OS used by any of the VMs. Both the
