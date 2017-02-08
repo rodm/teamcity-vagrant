@@ -16,7 +16,7 @@
 TEAMCITY_HOME=/opt/teamcity-server
 TEAMCITY_USER=teamcity
 SERVER_SCRIPT=${TEAMCITY_HOME}/bin/server.sh
-SERVER_LOG=${TEAMCITY_HOME}/logs/server-console.log
+SERVER_LOG=/var/log/teamcity/server-console.log
 
 umask 002
 

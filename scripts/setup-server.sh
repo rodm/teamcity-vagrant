@@ -23,6 +23,8 @@ TEAMCITY_WAR=TeamCity-9.1.7.war
 TEAMCITY_URL=http://download.jetbrains.com/teamcity/$TEAMCITY_WAR
 TEAMCITY_USER=teamcity
 TEAMCITY_GROUP=teamcity
+TEAMCITY_LOG_DIR=/var/log/teamcity
+TEAMCITY_RUN_DIR=/var/run/teamcity
 
 # Install various packages required to run TeamCity
 if [ -f /etc/redhat-release ]; then
@@ -90,10 +92,16 @@ fi
 /usr/sbin/groupadd -r $TEAMCITY_GROUP 2>/dev/null
 /usr/sbin/useradd -c $TEAMCITY_USER -r -s /bin/bash -d $TEAMCITY_DIR -g $TEAMCITY_GROUP $TEAMCITY_USER 2>/dev/null
 
+mkdir -p $TEAMCITY_LOG_DIR $TEAMCITY_RUN_DIR
+chown $TEAMCITY_USER:$TEAMCITY_GROUP $TEAMCITY_LOG_DIR $TEAMCITY_RUN_DIR
+
 if [ ! -f /etc/teamcity-server.conf ]; then
 cat > /etc/teamcity-server.conf <<EOF
 JAVA_HOME=/opt/$JDK_DIR
 CATALINA_HOME=$TOMCAT_DIR
+CATALINA_PID=$TEAMCITY_RUN_DIR/teamcity.pid
+CATALINA_OUT=$TEAMCITY_LOG_DIR/catalina.out
+CATALINA_TMPDIR=$TEAMCITY_LOG_DIR/temp
 EOF
 fi
 
@@ -130,7 +138,6 @@ if [ ! -d $TEAMCITY_DIR/shared/lib ]; then
     fi
     cp /vagrant/downloads/$MYSQL_JDBC_JAR $TEAMCITY_DIR/data/lib/jdbc
 fi
-mkdir $TEAMCITY_DIR/logs
 
 chown -R $TEAMCITY_USER:$TEAMCITY_GROUP $TEAMCITY_DIR
 
