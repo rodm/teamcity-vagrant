@@ -1,0 +1,9 @@
+/var/log/teamcity/catalina.out {
+    daily
+    missingok
+    rotate 7
+    compress
+    copytruncate
+    dateext
+    size 50M
+}

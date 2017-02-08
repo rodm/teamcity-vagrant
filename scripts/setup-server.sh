@@ -69,6 +69,9 @@ EOF
     mysql -u root -p$MYSQL_PASSWORD < /tmp/database-setup.sql
 fi
 
+# Configure logrotate
+cp /vagrant/files/logrotate/teamcity /etc/logrotate.d
+
 # Download and install Java
 mkdir -p /opt
 mkdir -p /vagrant/downloads
